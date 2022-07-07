@@ -27,6 +27,10 @@ Available hooks:
 - [`google-java-format`](#google-java-format) - run
   [google-java-format](https://github.com/google/google-java-format)
 
+## Requirements
+
+Python >= 3.8; pre-commit >= 2.0.0.
+
 ## `checkstyle`
 
 Runs [Checkstyle](https://checkstyle.org/) on Java source files.
@@ -43,11 +47,8 @@ See also: Checkstyle [command line usage](https://checkstyle.org/cmdline.html).
 
 If you override `args`, you need to include the `-c` option.
 
-By default, the "Google" style checks (`/google_checks.xml`) included with
-Checkstyle are used. Note that these checks issue only warnings, not errors, so
-the hook will pass even if there are style violations. You can set `verbose` to
-`true` to print the warnings, or use a custom Checkstyle configuration file to
-generate errors.
+By default, the "Sun" style checks (`/sun_checks.xml`) included with Checkstyle
+are used.
 
 `.pre-commit-config.yaml` examples:
 
@@ -56,8 +57,8 @@ generate errors.
   rev: v0.1.0
   hooks:
     - id: checkstyle
-      args: ["-c", "/sun_checks.xml"]
-      verbose: true
+      args: ["-c", "/google_checks.xml"]
+      verbose: true  # /google_checks.xml only issues warnings.
 ```
 
 ```yaml
@@ -71,7 +72,7 @@ generate errors.
         - --jvm-arg=-Xmx2048M
         - --
         - -c
-        - /google_checks.xml
+        - /sun_checks.xml
 ```
 
 ## `pmd`
@@ -191,4 +192,35 @@ If you override `args`, you will probably want to include `--replace`.
         - --
         - --replace
         - --skip-reflowing-long-strings
+```
+
+## Development
+
+```sh
+git clone https://github.com/marktsuchida/cjdk-pre-commit.git
+cd cjdk-pre-commit
+python -m venv venv
+echo '*' >venv/.gitignore
+source venv/bin/activate
+pip install -e .[dev,testing]
+pre-commit install
+```
+
+Run unit tests:
+
+```sh
+pytest
+```
+
+Run system tests:
+
+```sh
+pytest systemtests
+```
+
+Run tests as done by the CI:
+
+```sh
+nox
+nox -s systemtest
 ```
