@@ -1,0 +1,49 @@
+# This file is part of cjdk-pre-commit.
+# Copyright 2022 Board of Regents of the University of Wisconsin System
+# SPDX-License-Identifier: MIT
+
+[project]
+name = "cjdk-pre-commit"
+dynamic = ["version"]
+description = "JVM-based pre-commit hooks"
+readme = "README.md"
+requires-python = ">= 3.8"
+license = {file = "LICENSE.txt"}
+keywords = ["pre-commit", "Java", "JVM"]
+authors = [
+    {name = "Mark A. Tsuchida"},
+]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Java",
+    "Topic :: Software Development",
+]
+
+dependencies = [
+    "cjdk == 0.2.0",
+    "click >= 8.0",
+]
+
+[project.urls]
+Repository = "https://github.com/marktsuchida/cjdk-pre-commit"
+
+[project.scripts]
+cjdk_pre_commit = "cjdk_pre_commit.__main__:main"
+
+[build-system]
+requires = [
+    "setuptools>=43",
+    "setuptools_scm[toml]>=6.2",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+write_to = "src/cjdk_pre_commit/_version.py"
+
+[tool.black]
+line-length = 79
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"

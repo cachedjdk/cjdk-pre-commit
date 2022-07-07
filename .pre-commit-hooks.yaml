@@ -1,0 +1,55 @@
+# This file is part of cjdk-pre-commit.
+# Copyright 2022 Board of Regents of the University of Wisconsin System
+# SPDX-License-Identifier: MIT
+
+- id: checkstyle
+  name: Checkstyle
+  description: Run Checkstyle on Java source files
+  language: python
+  entry: cjdk_pre_commit checkstyle
+  types: [java]
+  require_serial: true
+  args:
+    - --
+    - -c
+    - /google_checks.xml
+
+- id: pmd
+  name: PMD
+  description: Run the PMD static analyzer
+  language: python
+  entry: cjdk_pre_commit pmd
+  types: [java]
+  pass_filenames: false
+  require_serial: true
+  args:
+    - --
+    - -d
+    - src/main/java
+    - -R
+    - rulesets/java/quickstart.xml
+
+- id: cpd
+  name: CPD
+  description: Run the PMD CPD copy-paste detector
+  language: python
+  entry: cjdk_pre_commit cpd
+  types: [java]
+  require_serial: true
+  args:
+    - --
+    - --minimum-tokens
+    - "100"
+    - --files
+    - src/main/java
+
+- id: google-java-format
+  name: cjdk_pre_commit google-java-format
+  description: Run google-java-format
+  language: python
+  entry: cjdk_pre_commit google-java-format
+  types: [java]
+  require_serial: true
+  args:
+    - --
+    - --replace
