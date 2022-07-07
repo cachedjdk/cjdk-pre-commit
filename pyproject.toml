@@ -25,6 +25,17 @@ dependencies = [
     "click >= 8.0",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "black == 22.3.0",
+    "nox >= 2022",
+    "pre-commit >= 2.0",
+]
+testing = [
+    "pytest >= 7.0",
+    "pytest-mock >= 3.8",
+]
+
 [project.urls]
 Repository = "https://github.com/marktsuchida/cjdk-pre-commit"
 
@@ -47,3 +58,6 @@ target-version = ["py38"]
 
 [tool.isort]
 profile = "black"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

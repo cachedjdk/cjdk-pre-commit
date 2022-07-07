@@ -106,10 +106,18 @@ def script_tool_args(script, args):
 def tool_setup(tool, version, jvm_arg_list, jvm_arg_str, tool_args):
     ttype = tool_type[tool]
     if ttype == "jar":
+        if jvm_arg_str:
+            raise ValueError(
+                f"--jvm-args is not allowed for {tool}; use --jvm-arg"
+            )
         jar = jar_func[tool](version)
         jvm_arg_list = jvm_arg_list if jvm_arg_list else []
         args = jar_tool_args(jar, jvm_arg_list, tool_args)
     elif ttype == "script":
+        if jvm_arg_list:
+            raise ValueError(
+                f"--jvm-arg is not allowed for {tool}; use --jvm-args"
+            )
         script = script_func[tool](version)
         args = script_tool_args(script, tool_args)
     env = env_func.get(tool, lambda jvm_args: {})(jvm_arg_str)
