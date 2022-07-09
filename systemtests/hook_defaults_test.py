@@ -5,7 +5,28 @@
 
 import os
 import subprocess
+import tempfile
 from pathlib import Path
+
+import pytest
+
+
+# Normally we would use pytest's tmp_path fixture, but we get problems on the
+# GitHub Actions Windows runner if we do that (something to do with referring
+# to a local repo with absolute path, or referring to a local repo on a
+# different drive). So create the temporary directory locally, so that we can
+# refer to the cjdk-pre-commit repo as '..'.  We probably don't need pytest's
+# nice naming and management of used temporary directories for these simple
+# tests.
+@pytest.fixture(scope="function")
+def path_to_repo_from_tempdir(monkeypatch):
+    orig = os.getcwd()
+    with tempfile.TemporaryDirectory(prefix="hook-test-repo-", dir=".") as d:
+        monkeypatch.chdir(d)
+        try:
+            yield ".."
+        finally:
+            monkeypatch.chdir(orig)  # So that removal of the tempdir works.
 
 
 def write_files(files):
@@ -25,11 +46,9 @@ def run_hook_with_defaults(repodir, hook, files):
     )
 
 
-def test_checkstyle_fail(monkeypatch, tmp_path):
-    repodir = os.getcwd()
-    monkeypatch.chdir(tmp_path)
+def test_checkstyle_fail(path_to_repo_from_tempdir):
     result = run_hook_with_defaults(
-        repodir,
+        path_to_repo_from_tempdir,
         "checkstyle",
         {
             "src/main/java/Hello.java": """
@@ -42,11 +61,9 @@ public class Hello {
     assert result.returncode != 0
 
 
-def test_checkstyle_pass(monkeypatch, tmp_path):
-    repodir = os.getcwd()
-    monkeypatch.chdir(tmp_path)
+def test_checkstyle_pass(path_to_repo_from_tempdir):
     result = run_hook_with_defaults(
-        repodir,
+        path_to_repo_from_tempdir,
         "checkstyle",
         {
             "src/main/java/mypackage/Hello.java": """
@@ -65,11 +82,9 @@ public class Hello {
     assert result.returncode == 0
 
 
-def test_google_java_format_fail(monkeypatch, tmp_path):
-    repodir = os.getcwd()
-    monkeypatch.chdir(tmp_path)
+def test_google_java_format_fail(path_to_repo_from_tempdir):
     result = run_hook_with_defaults(
-        repodir,
+        path_to_repo_from_tempdir,
         "google-java-format",
         {
             "src/main/java/Hello.java": """
@@ -84,22 +99,18 @@ public class Hello {
         assert fp.read() == "public class Hello {}\n"
 
 
-def test_google_java_format_pass(monkeypatch, tmp_path):
-    repodir = os.getcwd()
-    monkeypatch.chdir(tmp_path)
+def test_google_java_format_pass(path_to_repo_from_tempdir):
     result = run_hook_with_defaults(
-        repodir,
+        path_to_repo_from_tempdir,
         "google-java-format",
         {"src/main/java/Hello.java": "public class Hello {}\n"},
     )
     assert result.returncode == 0
 
 
-def test_pmd_fail(monkeypatch, tmp_path):
-    repodir = os.getcwd()
-    monkeypatch.chdir(tmp_path)
+def test_pmd_fail(path_to_repo_from_tempdir):
     result = run_hook_with_defaults(
-        repodir,
+        path_to_repo_from_tempdir,
         "pmd",
         {
             "src/main/java/Hello.java": """
@@ -112,11 +123,9 @@ public class Hello {
     assert result.returncode != 0
 
 
-def test_pmd_pass(monkeypatch, tmp_path):
-    repodir = os.getcwd()
-    monkeypatch.chdir(tmp_path)
+def test_pmd_pass(path_to_repo_from_tempdir):
     result = run_hook_with_defaults(
-        repodir,
+        path_to_repo_from_tempdir,
         "pmd",
         {
             "src/main/java/mypackage/Hello.java": """
@@ -135,11 +144,9 @@ public class Hello {
     assert result.returncode == 0
 
 
-def test_cpd_fail(monkeypatch, tmp_path):
-    repodir = os.getcwd()
-    monkeypatch.chdir(tmp_path)
+def test_cpd_fail(path_to_repo_from_tempdir):
     result = run_hook_with_defaults(
-        repodir,
+        path_to_repo_from_tempdir,
         "cpd",
         {
             "src/main/java/Hello.java": """
@@ -189,11 +196,9 @@ public class World {
     assert result.returncode != 0
 
 
-def test_cpd_pass(monkeypatch, tmp_path):
-    repodir = os.getcwd()
-    monkeypatch.chdir(tmp_path)
+def test_cpd_pass(path_to_repo_from_tempdir):
     result = run_hook_with_defaults(
-        repodir,
+        path_to_repo_from_tempdir,
         "cpd",
         {
             "src/main/java/Hello.java": """
