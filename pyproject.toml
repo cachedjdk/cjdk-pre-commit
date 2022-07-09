@@ -21,7 +21,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "cjdk == 0.2.0",
+    "cjdk == 0.3.0",
     "click >= 8.0",
 ]
 
