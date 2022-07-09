@@ -11,7 +11,7 @@ running tools that require a Java Virtual Machine to run.
 
 (The tools may be applicable to languages other than Java.)
 
-These hooks use [cjdk](https://marktsuchida.github.io/cjdk/latest/) to download
+These hooks use [cjdk](https://cachedjdk.github.io/cjdk/latest/) to download
 and cache both the JVM and the tool packages, so that there is no need for
 `java` to be available on the `PATH` or for `JAVA_HOME` to be configured
 correctly for the tools. You can run the hooks using a different JDK from your
@@ -53,7 +53,7 @@ are used.
 `.pre-commit-config.yaml` examples:
 
 ```yaml
-- repo: https://github.com/marktsuchida/cjdk-pre-commit
+- repo: https://github.com/cachedjdk/cjdk-pre-commit
   rev: v0.1.0
   hooks:
     - id: checkstyle
@@ -62,7 +62,7 @@ are used.
 ```
 
 ```yaml
-- repo: https://github.com/marktsuchida/cjdk-pre-commit
+- repo: https://github.com/cachedjdk/cjdk-pre-commit
   rev: v0.1.0
   hooks:
     - id: checkstyle
@@ -99,7 +99,7 @@ By default, the `rulesets/java/quickstart.xml` ruleset is run on the directory
 `.pre-commit-config.yaml` example:
 
 ```yaml
-- repo: https://github.com/marktsuchida/cjdk-pre-commit
+- repo: https://github.com/cachedjdk/cjdk-pre-commit
   rev: v0.1.0
   hooks:
     - id: pmd
@@ -137,7 +137,7 @@ in `src/main/java`.
 `.pre-commit-config.yaml` example:
 
 ```yaml
-- repo: https://github.com/marktsuchida/cjdk-pre-commit
+- repo: https://github.com/cachedjdk/cjdk-pre-commit
   rev: v0.1.0
   hooks:
     - id: cpd
@@ -146,7 +146,7 @@ in `src/main/java`.
 `.pre-commit-config.yaml` example for running CPD on Python source files:
 
 ```yaml
-- repo: https://github.com/marktsuchida/cjdk-pre-commit
+- repo: https://github.com/cachedjdk/cjdk-pre-commit
   rev: v0.1.0
   hooks:
     - id: cpd
@@ -184,7 +184,7 @@ If you override `args`, you will probably want to include `--replace`.
 `.pre-commit-config.yaml` example:
 
 ```yaml
-- repo: https://github.com/marktsuchida/cjdk-pre-commit
+- repo: https://github.com/cachedjdk/cjdk-pre-commit
   rev: v0.1.0
   hooks:
     - id: google-java-format
@@ -197,7 +197,7 @@ If you override `args`, you will probably want to include `--replace`.
 ## Development
 
 ```sh
-git clone https://github.com/marktsuchida/cjdk-pre-commit.git
+git clone https://github.com/cachedjdk/cjdk-pre-commit.git
 cd cjdk-pre-commit
 python -m venv venv
 echo '*' >venv/.gitignore

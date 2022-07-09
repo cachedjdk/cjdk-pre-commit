@@ -37,7 +37,7 @@ testing = [
 ]
 
 [project.urls]
-Repository = "https://github.com/marktsuchida/cjdk-pre-commit"
+Repository = "https://github.com/cachedjdk/cjdk-pre-commit"
 
 [project.scripts]
 cjdk_pre_commit = "cjdk_pre_commit.__main__:main"
