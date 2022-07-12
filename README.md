@@ -224,3 +224,11 @@ Run tests as done by the CI:
 nox
 nox -s systemtest
 ```
+
+## Changelog
+
+### [0.1.0] - 2022-07-12
+
+- First release.
+
+[0.1.0]: https://github.com/cachedjdk/cjdk-pre-commit/tree/v0.1.0
